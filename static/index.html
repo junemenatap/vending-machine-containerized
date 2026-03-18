@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>June's Vending Machine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-10">
+    <div class="max-w-md mx-auto bg-gray-800 p-6 rounded-xl shadow-2xl border-4 border-gray-700">
+        <h1 class="text-2xl font-bold mb-4 text-center text-blue-400">Vending Machine</h1>
+        
+        <div>  
+            <h2 class="text-sm font-bold mb-2 uppercase text-gray-400">Add New Product</h2>
+            <div class="flex gap-2">
+                <input id="new-name" type="text" placeholder="Name" class="bg-gray-800 p-2 rounded flex-1 border border-gray-600">
+                <input id="new-price" type="number" placeholder="Price" class="bg-gray-800 p-2 rounded w-24 border border-gray-600">
+                <button onclick="addProduct()" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded font-bold">Add</button>
+            </div>
+        </div>
+
+        <div id="product-list" class="space-y-4">
+            <p class="text-gray-400">Loading snacks...</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadProducts() {
+            const response = await fetch('http://127.0.0.1:8000/products');
+            const products = await response.json();
+            
+            const list = document.getElementById('product-list');
+            list.innerHTML = '';
+
+            products.forEach(item => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg group">
+                        <div class="flex flex-col">
+                            <span class="font-bold">${item.name}</span>
+                            <span class="text-xs text-gray-400">Rp${item.price}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="updatePrice('${item.name}')" class="text-blue-400 hover:text-blue-300 text-xs">Edit</button>
+                            
+                            <button onclick="deleteProduct('${item.name}')" class="text-red-500 hover:text-red-400 text-xs">Delete</button>
+                            
+                            <button class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 font-bold">Buy</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        loadProducts();
+
+        async function addProduct() {
+            const name = document.getElementById('new-name').value;
+            const price = document.getElementById('new-price').value;
+
+            await fetch('products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, price })
+            });
+
+            location.reload();
+        }
+
+        async function deleteProduct(name) {
+            
+            if (confirm(`Are you sure you want to delete ${name}?`)) {
+                await fetch(`products/${name}`, {
+                    method: 'DELETE'
+                });
+                location.reload();
+            }
+        }
+
+        async function updatePrice(name) {
+
+            const value = prompt(`Enter new price for ${name}:`);
+            const newPrice = parseInt(value);
+            if (newPrice) {
+                await fetch(`products/${name}?new_price=${newPrice}`, {
+                    method: 'PATCH'
+                });
+                location.reload();
+            }
+        }
+
+    </script>
+</body>
+</html>
