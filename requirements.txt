@@ -2,3 +2,5 @@ fastapi
 uvicorn
 psycopg2-binary
 python-dotenv
+opentelemetry-distro
+opentelemetry-exporter-otlp

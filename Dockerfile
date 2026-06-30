@@ -9,6 +9,8 @@ COPY requirements.txt .
 
 # 4. Install the libraries
 RUN pip install --no-cache-dir -r requirements.txt
+RUN opentelemetry-bootstrap -a install
+
 
 # 5. Copy all your code into the container
 COPY . .
@@ -17,4 +19,4 @@ COPY . .
 EXPOSE 8000
 
 # 7. Command to start the app
-CMD ["uvicorn", "vending_machine:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["opentelemetry-instrument", "uvicorn", "vending_machine:app", "--host", "0.0.0.0", "--port", "8000"]
