@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>June's Vending Machine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/tailwind.css">
 </head>
 <body class="bg-gray-900 text-white p-10">
     <div class="max-w-md mx-auto bg-gray-800 p-6 rounded-xl shadow-2xl border-4 border-gray-700">
@@ -25,7 +25,7 @@
 
     <script>
         async function loadProducts() {
-            const response = await fetch('http://127.0.0.1:8000/products');
+            const response = await fetch('/products');
             const products = await response.json();
             
             const list = document.getElementById('product-list');
