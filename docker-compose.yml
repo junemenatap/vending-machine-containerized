@@ -16,8 +16,15 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - dummy
     env_file:
       - .env # This injects the variables into your Python container
+
+  dummy:
+    build:
+      context: ./dummy
+    ports:
+      - "9000:9000"
 
 volumes:
   postgres_data:

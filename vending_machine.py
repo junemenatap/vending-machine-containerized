@@ -4,10 +4,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from database import VendingDatabase
 from schemas import Products
+import requests
+import logging
 
 app = FastAPI()
 db = VendingDatabase()
 db.create_tables()
+
+logger = logging.getLogger("uvicorn.error")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +28,10 @@ async def read_index():
 
 @app.get("/products")
 def read_products():
+    try:
+        requests.get("http://dummy:9000/ping", timeout=5)
+    except requests.exceptions.RequestException as err:
+        logger.error(f"API hit to dummy service failed: {err}")
     return db.get_all_products()
 
 @app.post("/products")
