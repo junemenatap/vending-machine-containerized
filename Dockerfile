@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 8000
 
 # 7. Command to start the app
-CMD ["opentelemetry-instrument", "uvicorn", "vending_machine:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["opentelemetry-instrument", "uvicorn", "vending_machine:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
