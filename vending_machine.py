@@ -54,3 +54,12 @@ def update_product_price(name: str, new_price: int):
         return {"message": f"{name} price updated successfully"}
     except Exception as e:
         return {"error": str(e)}
+    
+# INTENTIONALLY VULNERABLE - no locking
+@app.post("/products/buy/{name}")
+def buy_item(name: str):
+    stock = db.get_stock(name)  # READ
+    if stock > 0:
+        db.decrement_stock(name)  # WRITE
+        return True
+    return False

@@ -33,6 +33,7 @@ class VendingDatabase:
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100) UNIQUE NOT NULL,
                 price INTEGER NOT NULL
+                stock INTEGER
             );
         """)
         conn.commit()
@@ -49,7 +50,7 @@ class VendingDatabase:
         try:
             with psycopg2.connect(**self.config) as conn:
                 with conn.cursor() as cur:
-                    cur.execute("INSERT INTO products (name, price) VALUES (%s, %s)", (name, price))
+                    cur.execute("INSERT INTO products (name, price, stock) VALUES (%s, %s, 5)", (name, price))
                     conn.commit()
         except errors.UniqueViolation:
             raise Exception(f"Product with name '{name}' already exists.")
