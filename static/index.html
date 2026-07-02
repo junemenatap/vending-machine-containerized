@@ -93,7 +93,7 @@
         }
 
         async function buyItem(name) {
-            await fetch(`products/buy/${name}`, {
+            const response = await fetch(`products/buy/${name}`, {
                 method: 'POST'
             });
             const data = await response.json();
