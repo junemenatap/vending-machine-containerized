@@ -17,6 +17,7 @@ services:
     depends_on:
       - db
       - dummy
+      - receipt
     env_file:
       - .env # This injects the variables into your Python container
 
@@ -25,6 +26,12 @@ services:
       context: ./dummy
     ports:
       - "9000:9000"
+
+  receipt:
+    build:
+      context: ./receipt-service
+    ports:
+      - "3001:3000"
 
 volumes:
   postgres_data:

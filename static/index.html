@@ -96,12 +96,19 @@
             await fetch(`products/buy/${name}`, {
                 method: 'POST'
             });
+            const data = await response.json();
+
+            if (data.receipt) {
+                alert(data.receipt);
+            } 
             location.reload();
         }
 
         async function replenishStock(name) {
-            await fetch(`/products/${name}/replenish`, { method: 'PATCH' });
-            loadProducts();
+            await fetch(`/products/${name}/replenish`, { 
+                method: 'PATCH'
+            });
+            location.reload();
         }
 
     </script>

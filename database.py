@@ -85,3 +85,9 @@ class VendingDatabase:
             with conn.cursor() as cur:
                 cur.execute("UPDATE products SET stock = stock + %s WHERE name = %s", (amount, name))
                 conn.commit()
+    
+    def get_product(self, name):
+        with psycopg2.connect(**self.config) as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("SELECT * FROM products WHERE name = %s", (name,))
+                return cur.fetchone()

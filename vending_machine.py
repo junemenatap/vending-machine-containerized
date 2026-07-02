@@ -61,7 +61,20 @@ def buy_item(name: str):
     stock = db.get_stock(name)  # READ
     if stock > 0:
         db.decrement_stock(name)  # WRITE
-        return {"message": f"{name} purchased successfully"}
+
+        product = db.get_product(name)
+
+        try:
+            receipt_response = requests.post("http://receipt:3000/receipt", json={
+                "name": product['name'],
+                "price": product['price'],
+                "amount": 1,
+            }, timeout=3)
+            receipt = receipt_response.json().get("receipt", "")
+        except requests.exceptions.RequestException as err:
+            logger.error(f"API hit to receipt service failed: {err}")
+            receipt = "Receipt service unavailable."
+        return {"message": f"{name} purchased successfully", "receipt": receipt}
     return {"error": f"{name} is out of stock"}
 
 @app.patch("/products/{name}/replenish")
