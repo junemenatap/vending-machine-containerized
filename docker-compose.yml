@@ -26,6 +26,10 @@ services:
       context: ./dummy
     ports:
       - "9000:9000"
+    env_file:
+      - .env
+    environment:
+      - OTEL_SERVICE_NAME: dummy-service
 
   receipt:
     build:
