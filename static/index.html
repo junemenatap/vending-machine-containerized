@@ -45,6 +45,8 @@
                             <button onclick="deleteProduct('${item.name}')" class="text-red-500 hover:text-red-400 text-xs">Delete</button>
                             
                             <button onclick="buyItem('${item.name}')" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 font-bold">Buy</button>
+
+                            <button onclick="replenishStock('${item.name}')" class="bg-yellow-600 px-3 py-1 rounded hover:bg-yellow-500 font-bold">Replenish</button>
                         </div>
                     </div>
                 `;
@@ -95,6 +97,11 @@
                 method: 'POST'
             });
             location.reload();
+        }
+
+        async function replenishStock(name) {
+            await fetch(`/products/${name}/replenish`, { method: 'PATCH' });
+            loadProducts();
         }
 
     </script>
