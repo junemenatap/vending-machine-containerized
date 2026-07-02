@@ -90,6 +90,13 @@
             }
         }
 
+        async function buyItem(name) {
+            await fetch(`products/buy/${name}`, {
+                method: 'POST'
+            });
+            location.reload();
+        }
+
     </script>
 </body>
 </html>
