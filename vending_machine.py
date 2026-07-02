@@ -78,7 +78,7 @@ def buy_item(name: str):
     return {"error": f"{name} is out of stock"}
 
 @app.patch("/products/{name}/replenish")
-def replenish_product(name: str, amount: int = 5):
+def replenish_product(name: str, amount: int = 1000):
     try:
         db.replenish_stock(name, amount)
         return {"message": f"{name} restocked by {amount}"}

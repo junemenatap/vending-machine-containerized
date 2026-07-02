@@ -80,7 +80,7 @@ class VendingDatabase:
                 cur.execute("UPDATE products SET stock = stock - 1 WHERE name = %s", (name,))
                 conn.commit()
 
-    def replenish_stock(self, name, amount=5):
+    def replenish_stock(self, name, amount=5000):
         with psycopg2.connect(**self.config) as conn:
             with conn.cursor() as cur:
                 cur.execute("UPDATE products SET stock = stock + %s WHERE name = %s", (amount, name))
