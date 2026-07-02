@@ -61,5 +61,5 @@ def buy_item(name: str):
     stock = db.get_stock(name)  # READ
     if stock > 0:
         db.decrement_stock(name)  # WRITE
-        return True
-    return False
+        return {"message": f"{name} purchased successfully"}
+    return {"error": f"{name} is out of stock"}

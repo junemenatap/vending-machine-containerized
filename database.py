@@ -32,7 +32,7 @@ class VendingDatabase:
             CREATE TABLE IF NOT EXISTS products (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100) UNIQUE NOT NULL,
-                price INTEGER NOT NULL
+                price INTEGER NOT NULL,
                 stock INTEGER
             );
         """)
@@ -65,4 +65,17 @@ class VendingDatabase:
         with psycopg2.connect(**self.config) as conn:
             with conn.cursor() as cur:
                 cur.execute("UPDATE products SET price = %s WHERE name = %s", (new_price, name))
+                conn.commit()
+
+    def get_stock(self, name):
+        with psycopg2.connect(**self.config) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT stock FROM products WHERE name = %s", (name,))
+                result = cur.fetchone()
+            return result[0] if result else 0
+
+    def decrement_stock(self, name):
+        with psycopg2.connect(**self.config) as conn:
+            with conn.cursor() as cur:
+                cur.execute("UPDATE products SET stock = stock - 1 WHERE name = %s", (name,))
                 conn.commit()
