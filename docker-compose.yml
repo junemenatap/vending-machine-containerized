@@ -29,7 +29,7 @@ services:
 
   receipt:
     build:
-      context: ./receipt-service
+      context: ./receipts
     ports:
       - "3001:3000"
 
