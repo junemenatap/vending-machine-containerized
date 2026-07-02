@@ -29,7 +29,7 @@ services:
     env_file:
       - .env
     environment:
-      - OTEL_SERVICE_NAME: dummy-service
+      - OTEL_SERVICE_NAME: dummy
 
   receipt:
     build:
