@@ -36,6 +36,10 @@ services:
       context: ./receipts
     ports:
       - "3001:3000"
+    env_file:
+      - .env
+    environment:
+      OTEL_SERVICE_NAME: receipt-service
 
 volumes:
   postgres_data:
