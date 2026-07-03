@@ -39,7 +39,7 @@ services:
     env_file:
       - .env
     environment:
-      OTEL_SERVICE_NAME: receipt-service
+      OTEL_SERVICE_NAME: receipt
 
 volumes:
   postgres_data:
